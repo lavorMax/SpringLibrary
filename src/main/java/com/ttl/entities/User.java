@@ -12,5 +12,5 @@ public class User {
     private Integer Id;
     private String Login;
     private String Password;
-    private String Name;    
+    private String Name;
 }

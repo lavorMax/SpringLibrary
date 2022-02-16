@@ -12,22 +12,21 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository{
-
+public class UserRepositoryImpl implements UserRepository {
     protected JdbcTemplate jdbcTemplate;
 
     @Autowired
     public void setJdbcTemplate(DataSource dc) {
         this.jdbcTemplate = new JdbcTemplate(dc);
     }
-    
+
     @Autowired
     private RowMapper<User> userRowMapper;
-    
+
     @Override
     public User getUserByLogin(String login) {
         String RawSQLquery = "Select * from Users WHERE Login = ?";
-        
+
         return jdbcTemplate.queryForObject(RawSQLquery, userRowMapper, login);
     }
 
@@ -37,9 +36,9 @@ public class UserRepositoryImpl implements UserRepository{
 
         jdbcTemplate.update((Connection con) -> {
             PreparedStatement statement = con.prepareStatement(
-                    "INSERT INTO Users (Login, Password, Name) VALUES (?,?,?)", 
+                    "INSERT INTO Users (Login, Password, Name) VALUES (?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            
+
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
             statement.setString(3, entity.getName());
@@ -48,13 +47,13 @@ public class UserRepositoryImpl implements UserRepository{
 
         return holder.getKey().intValue();
     }
-    
+
     @Override
     public User read(Integer id) {
         String RawSQLquery = "Select * from Users WHERE ID = ?";
-        
+
         return jdbcTemplate.queryForObject(RawSQLquery, userRowMapper, id);
-        
+
     }
 
     @Override
@@ -62,15 +61,14 @@ public class UserRepositoryImpl implements UserRepository{
         String RawSQLquery = "Update Books SET Login = ?, "
                    + "Password = ?, Name = ? WHERE Id = ?";
 
-        jdbcTemplate.update(RawSQLquery, entity.getLogin(), entity.getPassword(), 
+        jdbcTemplate.update(RawSQLquery, entity.getLogin(), entity.getPassword(),
                             entity.getName(), entity.getId());
     }
 
     @Override
     public void deleteById(Integer id) {
         String RawSQLquery = "DELETE FROM Users WHERE Id = ?";
-        
+
         jdbcTemplate.update(RawSQLquery, id);
     }
-    
 }

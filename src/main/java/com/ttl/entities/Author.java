@@ -11,5 +11,5 @@ import lombok.*;
 public class Author {
     private Integer Id;
     private String Name;
-    private String Surname;    
+    private String Surname;
 }

@@ -14,127 +14,101 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
-
     protected JdbcTemplate jdbcTemplate;
 
     @Autowired
     public void setJdbcTemplate(DataSource dc) {
         this.jdbcTemplate = new JdbcTemplate(dc);
     }
-    
+
     @Autowired
     private RowMapper<Book> bookRowMapper;
-       
 
     @Override
     public List<Book> getAllBooksByTitle(String title) {
-        String RawSQLquery = 
+        String RawSQLQuery =
                      "Select b.ID, Title, Description, AuthorId, Name, Surname "
                    + "from Books b join Authors a on b.AuthorId = a.ID "
                    + "WHERE b.Title like '%"
                    + title + "%'";
-        
-        return jdbcTemplate.query(RawSQLquery, bookRowMapper);
+
+        return jdbcTemplate.query(RawSQLQuery, bookRowMapper);
     }
-    
+
     @Override
     public List<Book> getAllBooksByKeyWords(String[] keywords) {
-        StringBuilder  RawSQLquery = new StringBuilder (
+        StringBuilder  RawSQLQuery = new StringBuilder (
                 "Select b.ID, Title, Description, AuthorId, Name, Surname "
               + "from Books b join Authors a on b.AuthorId = a.ID WHERE ");
-        
+
         for (int i = 0; i < keywords.length; i++) {
-            RawSQLquery.append("Description like '%");
-            RawSQLquery.append(keywords[i]);
-            RawSQLquery.append("%'");
+            RawSQLQuery.append("Description like '%");
+            RawSQLQuery.append(keywords[i]);
+            RawSQLQuery.append("%'");
             if(i == keywords.length - 1) break;
-            RawSQLquery.append(" or ");
+            RawSQLQuery.append(" or ");
         }
-        
-        return jdbcTemplate.query(RawSQLquery.toString(), bookRowMapper);
-    }
-    
-    /*
-    @Override
-    public Page<Book> getAllBooksByAuthorName(String authorName, Pageable page) {
 
-        Order order = Order.by("ID");
-        
-        List<Book> books = jdbcTemplate.query("Select b.ID, Title, Description, AuthorId, Name, Surname " 
-                   + "from Books b join Authors a on b.AuthorId = a.ID " 
-                   + "WHERE concat(Name, ' ', Surname) like '%"
-                   + authorName + "%' " 
-                   + "or concat(Surname, ' ', Name) like '%"
-                   + authorName + "%' LIMIT " + page.getPageSize() + " OFFSET " + page.getOffset(),
-        bookRowMapper);
-        
-    return new PageImpl<Book>(books, page, count());
-    }
-    
-    
-    private int count() {
-        return jdbcTemplate.queryForObject("SELECT count(*) FROM Books", Integer.class);
+        return jdbcTemplate.query(RawSQLQuery.toString(), bookRowMapper);
     }
 
-    */
-    
     @Override
     public List<Book> getAllBooksByAuthorName(String authorName) {
-        String RawSQLquery = 
-                     "Select b.ID, Title, Description, AuthorId, Name, Surname " 
-                   + "from Books b join Authors a on b.AuthorId = a.ID " 
+        String RawSQLQuery =
+                     "Select b.ID, Title, Description, AuthorId, Name, Surname "
+                   + "from Books b join Authors a on b.AuthorId = a.ID "
                    + "WHERE concat(Name, ' ', Surname) like '%"
-                   + authorName + "%' " 
+                   + authorName + "%' "
                    + "or concat(Surname, ' ', Name) like '%"
                    + authorName + "%'";
-        
-        return jdbcTemplate.query(RawSQLquery, bookRowMapper);
+
+        return jdbcTemplate.query(RawSQLQuery, bookRowMapper);
     }
 
     @Override
     public Integer create(Book entity) {
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
-        
+
         jdbcTemplate.update((Connection con) -> {
             PreparedStatement statement = con.prepareStatement("INSERT INTO Books"
                     + " (Title, Description, AuthorId) VALUES (?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            
+
             statement.setString(1, entity.getTitle());
             statement.setString(2, entity.getDescription());
-            statement.setInt(3, entity.getAuthor().getId());
+            statement.setInt(3, entity.getAuthorId());
             return statement;
         }, holder);
 
         return holder.getKey().intValue();
     }
-    
+
     @Override
     public Book read(Integer id) {
-        String RawSQLquery = 
+        String RawSQLQuery =
                      "Select b.ID, Title, Description, AuthorId, Name, Surname "
                    + "from Books b join Authors a on b.AuthorId = a.ID"
                    + " WHERE b.ID = ?";
-        
-        return jdbcTemplate.queryForObject(RawSQLquery, bookRowMapper, id);
+
+        return jdbcTemplate.queryForObject(RawSQLQuery, bookRowMapper, id);
     }
 
     @Override
     public void update(Book entity) {
-        String RawSQLquery = 
+        String RawSQLQuery =
                    "Update Books SET Title = ?, Description = ?, AuthorId = ? "
                  + "WHERE Id = ?";
 
-        jdbcTemplate.update(RawSQLquery, entity.getTitle(), 
-                                         entity.getDescription(), 
-                                         entity.getAuthor().getId(), 
+        jdbcTemplate.update(RawSQLQuery, entity.getTitle(),
+                                         entity.getDescription(),
+                                         entity.getAuthorId(),
                                          entity.getId());
     }
 
     @Override
     public void deleteById(Integer id) {
-        String RawSQLquery = "DELETE FROM Books WHERE Id = ?";
-        
-        jdbcTemplate.update(RawSQLquery, id);
+        String RawSQLQuery = "DELETE FROM Books WHERE Id = ?";
+
+        jdbcTemplate.update(RawSQLQuery, id);
     }
 }

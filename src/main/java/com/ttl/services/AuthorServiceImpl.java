@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class AuthorServiceImpl implements AuthorService{
-    
+public class AuthorServiceImpl implements AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
-    
+
     @Autowired
     private Mapper<Author, AuthorDTO> authorMapper;
 

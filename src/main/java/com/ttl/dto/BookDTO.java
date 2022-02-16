@@ -13,7 +13,6 @@ public class BookDTO {
     private Integer Id = -1;
     private String Title;
     private String Description;
-    private AuthorDTO Author;
     @Builder.Default
     private Integer AuthorId = -1;
 }

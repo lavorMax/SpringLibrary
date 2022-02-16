@@ -9,11 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(value = {"com.ttl"})
 @EnableTransactionManagement
 public class LibraryFirstVarApplication {
-
 	public static void main(String[] args) {
-            
 		SpringApplication.run(LibraryFirstVarApplication.class, args);
-               
 	}
-
 }

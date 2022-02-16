@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/bookSearch")
 public class BookSearchController {
-    
+    private final BookService bookService;
+
     @Autowired
-    private BookService bookService;
-    
+    public BookSearchController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
     @GetMapping("/getByAuthorName/{authorName}")
-    public List<BookDTO> serchByAuthorName(@PathVariable String authorName){
+    public List<BookDTO> searchByAuthorName(@PathVariable String authorName){
         List<BookDTO> books = bookService.getAllBooksByAuthorName(authorName);
-         
+
         return books;
     }
-    
-    
+
     @GetMapping("/getByTitle/{title}")
     public List<BookDTO> searchByTitle(@PathVariable String title){
         List<BookDTO> books = bookService.getAllBooksByTitle(title);
-         
+
         return books;
     }
-    
+
     @GetMapping("/getByKeyWords/{keywords}")
     public List<BookDTO> searchByKeyWords(@PathVariable String keywords){
         List<BookDTO> books = bookService.getAllBooksByKeyWords(keywords);
-        
+
         return books;
     }
 }
-

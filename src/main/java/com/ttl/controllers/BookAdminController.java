@@ -14,21 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/bookAdmin")
 public class BookAdminController {
-    
+    private final BookService bookService;
+
     @Autowired
-    private BookService bookService;
-    
-    @PostMapping("/postbook")
-    public Integer postBook(@RequestBody BookDTO book){
+    public BookAdminController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @PostMapping("/book")
+    public Integer postBook(@RequestBody BookDTO book) {
         return bookService.create(book);
     }
-    
-    @PutMapping("/putbook")
-    public void putBook(@RequestBody BookDTO book){
+
+    @PutMapping("/book/{id}")
+    public void putBook(@RequestBody BookDTO book, @PathVariable Integer id){
+        book.setId(id);
         bookService.update(book);
     }
-    
-    @DeleteMapping("/deletebook/{id}")
+
+    @DeleteMapping("/book/{id}")
     public void deleteBook(@PathVariable Integer id){
         bookService.delete(id);
     }

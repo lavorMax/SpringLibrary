@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class AuthorRowMapper implements RowMapper<Author>{
-    
+public class AuthorRowMapper implements RowMapper<Author> {
     @Override
     public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -19,6 +18,5 @@ public class AuthorRowMapper implements RowMapper<Author>{
                .Name(rs.getString("Name"))
                .Surname(rs.getString("Surname"))
                .build();
-
     }
 }

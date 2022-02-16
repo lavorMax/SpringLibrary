@@ -12,5 +12,5 @@ public class Book {
     private Integer Id;
     private String Title;
     private String Description;
-    private Author Author;
+    private Integer AuthorId;
 }

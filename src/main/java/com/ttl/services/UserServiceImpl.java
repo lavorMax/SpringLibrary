@@ -8,14 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
-
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private Mapper<User, UserDTO> userMapper;
-    
+
     @Override
     public UserDTO getUserByLogin(String login) {
         return userMapper.EntityToDTO(userRepository.getUserByLogin(login));
@@ -26,5 +25,4 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.read(Id);
         return user.getPassword().equals(password);
     }
-    
 }
