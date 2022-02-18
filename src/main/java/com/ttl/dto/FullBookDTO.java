@@ -1,4 +1,4 @@
-package com.ttl.entities;
+package com.ttl.dto;
 
 import lombok.*;
 
@@ -8,11 +8,11 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class Book {
-    private Integer Id;
+public class FullBookDTO {
+    @Builder.Default
+    private Integer Id = -1;
     private String Title;
     private String Description;
-    private Integer AuthorId;
 
-    private Author Author;
+    private AuthorDTO Author;
 }

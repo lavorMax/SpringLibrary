@@ -1,6 +1,7 @@
 package com.ttl.services;
 
 import com.ttl.dto.BookDTO;
+import com.ttl.dto.FullBookDTO;
 import com.ttl.entities.Book;
 import com.ttl.mappers.Mapper;
 import com.ttl.repositories.BookRepository;
@@ -18,35 +19,38 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private Mapper<Book, BookDTO> bookMapper;
 
+    @Autowired
+    private Mapper<Book, FullBookDTO> fullBookMapper;
+
     @Override
-    public List<BookDTO> getAllBooksByTitle(String title) {
+    public List<FullBookDTO> getAllBooksByTitle(String title) {
         return bookRepository.getAllBooksByTitle(title)
                              .stream()
-                             .map(i -> bookMapper.EntityToDTO(i))
+                             .map(i -> fullBookMapper.EntityToDTO(i))
                              .collect(toList());
     }
 
     @Override
-    public List<BookDTO> getAllBooksByKeyWords(String keywords) {
+    public List<FullBookDTO> getAllBooksByKeyWords(String keywords) {
         String[] keywordsArray =  keywords.split(" ");
 
         return bookRepository.getAllBooksByKeyWords(keywordsArray)
                              .stream()
-                             .map(i -> bookMapper.EntityToDTO(i))
+                             .map(i -> fullBookMapper.EntityToDTO(i))
                              .collect(toList());
     }
 
     @Override
-    public List<BookDTO> getAllBooksByAuthorName(String authorName) {
+    public List<FullBookDTO> getAllBooksByAuthorName(String authorName) {
         return bookRepository.getAllBooksByAuthorName(authorName)
                              .stream()
-                             .map(i -> bookMapper.EntityToDTO(i))
+                             .map(i -> fullBookMapper.EntityToDTO(i))
                              .collect(toList());
     }
 
     @Override
-    public BookDTO read(Integer id) {
-        return bookMapper.EntityToDTO(bookRepository.read(id));
+    public FullBookDTO read(Integer id) {
+        return fullBookMapper.EntityToDTO(bookRepository.read(id));
     }
 
     @Transactional

@@ -1,16 +1,18 @@
 package com.ttl.services;
 
 import com.ttl.dto.BookDTO;
+import com.ttl.dto.FullBookDTO;
+
 import java.util.List;
 
 public interface BookService {
-    List<BookDTO> getAllBooksByTitle(String title);
+    List<FullBookDTO> getAllBooksByTitle(String title);
 
-    List<BookDTO> getAllBooksByKeyWords(String keywords);
+    List<FullBookDTO> getAllBooksByKeyWords(String keywords);
 
-    List<BookDTO> getAllBooksByAuthorName(String authorName);
+    List<FullBookDTO> getAllBooksByAuthorName(String authorName);
 
-    BookDTO read(Integer id);
+    FullBookDTO read(Integer id);
 
     Integer create(BookDTO entity);
 
